@@ -1,0 +1,17 @@
+version: "3.2"
+
+services:
+  php:
+    image: wodby/php:$PHP_TAG
+    container_name: "${PROJECT_NAME}_php"
+    environment:
+      PHP_FPM_USER: $PHP_FPM_USER
+      PHP_FPM_GROUP: $PHP_FPM_GROUP
+      PHP_MEMORY_LIMIT: $PHP_MEMORY_LIMIT
+      PHP_XDEBUG_MAX_NESTING_LEVEL: $PHP_XDEBUG_MAX_NESTING_LEVEL
+      PHP_XDEBUG_REMOTE_HOST: $PHP_XDEBUG_REMOTE_HOST
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www/html
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK

@@ -1,0 +1,14 @@
+parameters:
+    sets:
+        - clean-code
+        - symfony
+        - psr12
+        - php71
+        - symfony-risky
+
+services:
+    PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+    Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer:
+        inline_short_lines: false
+    PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer: ~
+    Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousDocBlockWhitespaceFixer: ~
