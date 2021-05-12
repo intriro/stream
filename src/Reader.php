@@ -60,10 +60,7 @@ class Reader implements Readable
         }
 
         if (-1 === fseek($this->stream->getResource(), $offset, $whence)) {
-            throw new UnseekableStreamException('Unable to seek to stream position ' . $offset . ' with whence ' . var_export(
-                $whence,
-                true
-            ));
+            throw new UnseekableStreamException('Unable to seek to stream position ' . $offset . ' with whence ' . var_export($whence, true));
         }
     }
 

@@ -24,12 +24,20 @@ $resource = fopen('/home/test/file.txt', 'rw+');
 $stream = Stream::createFromResource($resource);
 ```
 
-You can also create streams directly from a file name or URL. 
+You can also create streams directly from a file name or URL.
 The URL can be in the format that is supported by [fopen](https://www.php.net/manual/en/function.fopen.php).
 
 ```
 $stream = Stream::createFromTarget('/home/test/file.txt', 'r');
 $stream = Stream::createFromTarget('php://temp', 'r');
+```
+
+You can also use the convenience methods provided by the `StreamFactory` to create streams.
+
+```
+$stream = StreamFactory::temporaryFile();
+$stream = StreamFactory::memory();
+$stream = StreamFactory::localFile(/home/test/file.txt', 'rw+');
 ```
 
 ### Reading and writing to a stream
@@ -66,5 +74,3 @@ $writer = new Writer(
 $reader->write('some text');
 
 ```
-
-TODO

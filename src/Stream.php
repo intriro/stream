@@ -7,7 +7,6 @@ namespace Intriro\Stream;
 use Intriro\Stream\Exception\InvalidArgumentException;
 use function fclose;
 use function fopen;
-use function is_resource;
 use function stream_get_meta_data;
 use const SEEK_CUR;
 
@@ -17,17 +16,13 @@ class Stream
      * @var resource|null A resource reference
      */
     private $resource;
-
     private bool $readable;
-
     private bool $writable;
-
     private bool $seekable;
-
     private bool $open;
 
     /**
-     * @var array Hash of readable and writable stream types
+     * @var array<string, <string, bool>> Hash of readable and writable stream types
      */
     private const READ_WRITE_HASH = [
         'read' => [
@@ -45,7 +40,7 @@ class Stream
     ];
 
     /**
-     * @var resource
+     * @param resource $resource
      */
     private function __construct($resource)
     {
@@ -55,7 +50,7 @@ class Stream
 
         $this->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
         $this->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
-        $this->seekable = $meta['seekable'] && 0 === \fseek($this->resource, 0, SEEK_CUR);
+        $this->seekable = $meta['seekable'] && 0 === fseek($this->resource, 0, SEEK_CUR);
         $this->open = true;
     }
 
@@ -64,27 +59,23 @@ class Stream
      */
     public static function createFromResource($resource): self
     {
-        if (!is_resource($resource)) {
-            throw new InvalidArgumentException(
-                'You have to provide a valid resource.'
-            );
+        if (!\is_resource($resource)) {
+            throw new InvalidArgumentException('You have to provide a valid resource.');
         }
 
         if ('stream' !== get_resource_type($resource)) {
-            throw new InvalidArgumentException(
-                'The provided resource is not a valid stream.'
-            );
+            throw new InvalidArgumentException('The provided resource is not a valid stream.');
         }
 
         return new self($resource);
     }
 
-    public static function createFromTarget(string $target, $mode): self
+    public static function createFromTarget(string $target, string $mode): self
     {
         $error = null;
         $resource = null;
 
-        if (is_string($target)) {
+        if (\is_string($target)) {
             set_error_handler(static function ($e) use (&$error): void {
                 if (E_WARNING !== $e) {
                     return;
@@ -124,7 +115,7 @@ class Stream
     public function isOpen(): bool
     {
         if (true === $this->open) {
-            if (null === $this->resource || !is_resource($this->resource)) {
+            if (null === $this->resource || !\is_resource($this->resource)) {
                 $this->open = false;
             }
         }
@@ -165,7 +156,7 @@ class Stream
     }
 
     /**
-     * @return resource|null The stream resource or null if the stream was closed.
+     * @return resource|null the stream resource or null if the stream was closed
      */
     public function getResource()
     {
