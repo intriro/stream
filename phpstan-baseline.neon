@@ -1,7 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$error_handler of function set_error_handler expects \\(callable\\(int, string, string, int, array\\)\\: bool\\)\\|null, Closure\\(mixed\\)\\: void given\\.$#"
+			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int, array\\)\\: bool\\)\\|null, Closure\\(mixed\\)\\: void given\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Parameter \\#1 \\$resource of static method Intriro\\\\Stream\\\\Stream\\:\\:createFromResource\\(\\) expects resource, resource\\|false given\\.$#"
 			count: 1
 			path: src/Stream.php
 
