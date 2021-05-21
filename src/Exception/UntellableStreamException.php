@@ -6,7 +6,7 @@ namespace Intriro\Stream\Exception;
 
 use RuntimeException;
 
-class UntellableStreamException extends RuntimeException implements ExceptionInterface
+class UntellableStreamException extends RuntimeException implements Exception
 {
     public static function dueToClosedStream(): self
     {

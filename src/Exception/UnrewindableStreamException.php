@@ -6,7 +6,7 @@ namespace Intriro\Stream\Exception;
 
 use RuntimeException;
 
-class UnrewindableStreamException extends RuntimeException implements ExceptionInterface
+class UnrewindableStreamException extends RuntimeException implements Exception
 {
     public static function forCallbackStream(): self
     {

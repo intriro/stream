@@ -6,7 +6,7 @@ namespace Intriro\Stream\Exception;
 
 use RuntimeException;
 
-class UnreadableStreamException extends RuntimeException implements ExceptionInterface
+class UnreadableStreamException extends RuntimeException implements Exception
 {
     public static function dueToConfiguration(): self
     {

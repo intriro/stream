@@ -6,6 +6,6 @@ namespace Intriro\Stream\Exception;
 
 use Throwable;
 
-interface ExceptionInterface extends Throwable
+interface Exception extends Throwable
 {
 }

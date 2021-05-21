@@ -7,7 +7,7 @@ namespace Intriro\Stream\Exception;
 use RuntimeException;
 use Throwable;
 
-class InvalidStreamPointerPositionException extends RuntimeException implements ExceptionInterface
+class InvalidStreamPointerPositionException extends RuntimeException implements Exception
 {
     public function __construct(
         string $message = 'Invalid pointer position',
