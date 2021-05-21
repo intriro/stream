@@ -12,11 +12,11 @@ class Writer implements Writable
 
     public function __construct(Stream $stream)
     {
-        if ($this->stream->isClosed()) {
+        if ($stream->isClosed()) {
             throw UnwritableStreamException::dueToClosedStream();
         }
 
-        if ($this->stream->isWritable()) {
+        if ($stream->isWritable()) {
             throw UnwritableStreamException::dueToConfiguration();
         }
 

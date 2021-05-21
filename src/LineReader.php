@@ -14,7 +14,7 @@ class LineReader extends Reader
             throw UnreadableStreamException::dueToClosedStream();
         }
 
-        if ($this->stream->isReadable()) {
+        if (!$this->stream->isReadable()) {
             throw UnreadableStreamException::dueToConfiguration();
         }
 

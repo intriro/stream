@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Intriro\Stream;
 
+use Intriro\Stream\Exception\RuntimeException;
 use Intriro\Stream\Exception\UnreadableStreamException;
 use Intriro\Stream\Exception\UnseekableStreamException;
 use Intriro\Stream\Exception\UntellableStreamException;
@@ -33,5 +34,8 @@ interface Readable
      */
     public function tell(): int;
 
+    /**
+     * @throws RuntimeException
+     */
     public function eof(): bool;
 }

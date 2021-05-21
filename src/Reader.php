@@ -19,11 +19,11 @@ class Reader implements Readable
 
     public function __construct(Stream $stream)
     {
-        if ($this->stream->isClosed()) {
+        if ($stream->isClosed()) {
             throw UnreadableStreamException::dueToClosedStream();
         }
 
-        if ($this->stream->isReadable()) {
+        if (!$stream->isReadable()) {
             throw UnreadableStreamException::dueToConfiguration();
         }
 
@@ -36,7 +36,7 @@ class Reader implements Readable
             throw UnreadableStreamException::dueToClosedStream();
         }
 
-        if ($this->stream->isReadable()) {
+        if (!$this->stream->isReadable()) {
             throw UnreadableStreamException::dueToConfiguration();
         }
 
