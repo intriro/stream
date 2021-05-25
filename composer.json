@@ -1,6 +1,6 @@
 {
     "name": "intriro/stream",
-    "description": "Provides a simple abstraction over streams of data",
+    "description": "Provides a simple object-oriented abstraction over streams of data",
     "type": "library",
     "license": "MIT",
     "authors": [

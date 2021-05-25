@@ -1,6 +1,6 @@
 # Intriro Stream
 
-Provides a simple abstraction over streams of data.
+Provides a simple object-oriented abstraction over streams of data.
 
 ## Installation
 
