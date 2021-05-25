@@ -10,6 +10,9 @@ class Writer implements Writable
 {
     private Stream $stream;
 
+    /**
+     * @throws UnwritableStreamException
+     */
     public function __construct(Stream $stream)
     {
         if ($stream->isClosed()) {

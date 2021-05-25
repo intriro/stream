@@ -12,7 +12,7 @@ class StreamTest extends TestCase
     /**
      * @test
      */
-    function it_should_create_from_vaild_resource(): void
+    function it_should_create_from_valid_resource(): void
     {
         $resource = fopen('php://temp', 'rw+');
 
@@ -26,7 +26,7 @@ class StreamTest extends TestCase
     /**
      * @test
      */
-    function it_should_not_create_from_invaild_resource(): void
+    function it_should_not_create_from_invalid_resource(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -35,9 +35,9 @@ class StreamTest extends TestCase
         );
     }
 
-    function test_create_from_target(): void
+    function test_create_from_url(): void
     {
-        $stream = Stream::createFromTarget('php://temp', 'r');
+        $stream = Stream::createFromUrl('php://temp', 'r');
 
         $this->assertIsResource($stream->getResource());
         $this->assertTrue($stream->isReadable());
@@ -50,7 +50,7 @@ class StreamTest extends TestCase
      */
     function it_should_be_readable_if_mode_is_correct(string $target, string $mode): void
     {
-        $stream = Stream::createFromTarget($target, $mode);
+        $stream = Stream::createFromUrl($target, $mode);
 
         $this->assertTrue($stream->isReadable());
     }
@@ -62,7 +62,7 @@ class StreamTest extends TestCase
      */
     function it_should_be_unreadable_if_mode_is_not_correct(string $target, string $mode): void
     {
-        $stream = Stream::createFromTarget($target, $mode);
+        $stream = Stream::createFromUrl($target, $mode);
 
         $this->assertFalse($stream->isReadable());
     }
@@ -74,7 +74,7 @@ class StreamTest extends TestCase
      */
     function it_should_be_unreadable_if_resource_is_closed(string $target, string $mode): void
     {
-        $stream = Stream::createFromTarget($target, $mode);
+        $stream = Stream::createFromUrl($target, $mode);
 
         fclose($stream->getResource());
 
@@ -88,7 +88,7 @@ class StreamTest extends TestCase
      */
     function it_should_be_open_if_resource_is_valid(string $target, string $mode): void
     {
-        $stream = Stream::createFromTarget($target, $mode);
+        $stream = Stream::createFromUrl($target, $mode);
 
         $this->assertTrue($stream->isOpen());
     }
@@ -100,7 +100,7 @@ class StreamTest extends TestCase
      */
     function it_should_not_be_closed_if_resource_is_valid(string $target, string $mode): void
     {
-        $stream = Stream::createFromTarget($target, $mode);
+        $stream = Stream::createFromUrl($target, $mode);
 
         $this->assertFalse($stream->isClosed());
     }
@@ -110,7 +110,7 @@ class StreamTest extends TestCase
      */
     function it_should_close_handle_on_destruct(): void
     {
-        $stream = Stream::createFromTarget('php://temp', 'r');
+        $stream = Stream::createFromUrl('php://temp', 'r');
         $resource = $stream->getResource();
 
         unset($stream);

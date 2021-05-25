@@ -17,6 +17,9 @@ class Reader implements Readable
 {
     protected Stream $stream;
 
+    /**
+     * @throws UnreadableStreamException
+     */
     public function __construct(Stream $stream)
     {
         if ($stream->isClosed()) {

@@ -21,20 +21,26 @@ $resource = fopen('/home/test/file.txt', 'rw+');
 $stream = Stream::createFromResource($resource);
 ```
 
-You can also create streams directly from a file name or URL.
+You can also create streams directly from a filename or a URL-style protocol.
 The URL can be in the format that is supported by [fopen](https://www.php.net/manual/en/function.fopen.php).
 
 ```
-$stream = Stream::createFromTarget('/home/test/file.txt', 'r');
-$stream = Stream::createFromTarget('php://temp', 'r');
+$stream = Stream::createFromFilename('file:///home/test/file.txt', 'r');
+$stream = Stream::createFromUrl('php://temp', 'r');
 ```
 
-You can also use the convenience methods provided by the `StreamFactory` to create streams.
+You can also use the convenience methods provided by the `StreamFactory` or `IoStreamFactory` to create streams.
 
 ```
-$stream = StreamFactory::temporaryFile();
-$stream = StreamFactory::memory();
-$stream = StreamFactory::localFile(/home/test/file.txt', 'rw+');
+$factory = new StreamFactory();
+$stream = $streamFactory->filename(/home/test/file.txt', 'rw+');
+
+$ioStreamFactory = new IoStreamFactory();
+$stream = $ioStreamFactory->temp();
+$stream = $ioStreamFactory->memory();
+$stream = $ioStreamFactory->stdin();
+$stream = $ioStreamFactory->stdout();
+$stream = $ioStreamFactory->stderr();
 ```
 
 ### Reading and writing to a stream
@@ -45,7 +51,7 @@ Manipulation of streams is done through readers and writers.
 
 ```
 $reader = new Reader(
-    Stream::createFromTarget('/home/test/file.txt', 'r')
+    Stream::createFromFilename('/home/test/file.txt', 'r')
 );
 
 $reader->read(100); // will read 100 bytes from the stream
@@ -53,7 +59,7 @@ $reader->read(100); // will read 100 bytes from the stream
 
 // Reading lines from a stream
 $reader = new LineReader(
-    Stream::createFromTarget('/home/test/file.txt', 'r')
+    Stream::createFromFilename('/home/test/file.txt', 'r')
 );
 
 while($line = $reader->readLine()) {
@@ -64,10 +70,11 @@ while($line = $reader->readLine()) {
 
 #### Writing to a stream
 ```
+$ioStreamFactory = new IoStreamFactory();
+
 $writer = new Writer(
-    Stream::createFromTarget('php://temp', 'rw+')
+    $ioStreamFactory->temp()
 );
 
-$reader->write('some text');
-
+$writer->write('some text');
 ```

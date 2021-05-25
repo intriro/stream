@@ -7,7 +7,6 @@ namespace Intriro\Stream;
 use Intriro\Stream\Exception\InvalidArgumentException;
 use function fclose;
 use function fopen;
-use function is_resource;
 use function stream_get_meta_data;
 use const SEEK_CUR;
 
@@ -57,10 +56,12 @@ class Stream
 
     /**
      * @param resource $resource
+     *
+     * @throws InvalidArgumentException
      */
     public static function createFromResource($resource): self
     {
-        if (!is_resource($resource)) {
+        if (!\is_resource($resource)) {
             throw new InvalidArgumentException('You have to provide a valid resource.');
         }
 
@@ -71,27 +72,52 @@ class Stream
         return new self($resource);
     }
 
-    public static function createFromTarget(string $target, string $mode): self
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function createFromUrl(string $url, string $mode): self
+    {
+        if (false === filter_var($url, FILTER_VALIDATE_URL)) {
+            throw new InvalidArgumentException('The provided URL is not valid.');
+        }
+
+        return self::create($url, $mode);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function createFromFilename(string $filename, string $mode): self
+    {
+        if (!file_exists($filename)) {
+            throw new InvalidArgumentException('File "%s" does not exist.');
+        }
+
+        return self::create($filename, $mode);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private static function create(string $target, string $mode): self
     {
         $error = null;
         $resource = null;
 
-        if (\is_string($target)) {
-            set_error_handler(static function ($e) use (&$error): void {
-                if (E_WARNING !== $e) {
-                    return;
-                }
+        set_error_handler(static function ($e) use (&$error): void {
+            if (E_WARNING !== $e) {
+                return;
+            }
 
-                $error = $e;
-            });
+            $error = $e;
+        });
 
-            $resource = fopen($target, $mode);
+        $resource = fopen($target, $mode);
 
-            restore_error_handler();
-        }
+        restore_error_handler();
 
         if ($error) {
-            throw new InvalidArgumentException('Invalid stream target provided');
+            throw new InvalidArgumentException('Invalid stream URL provided.');
         }
 
         return self::createFromResource($resource);
@@ -116,7 +142,7 @@ class Stream
     public function isOpen(): bool
     {
         if (true === $this->open) {
-            if (null === $this->resource || !is_resource($this->resource)) {
+            if (null === $this->resource || !\is_resource($this->resource)) {
                 $this->open = false;
             }
         }
