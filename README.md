@@ -8,9 +8,6 @@ Provides a simple abstraction over streams of data.
 composer require intriro/stream
 ```
 
-**Note:**
-This library is still under development, so the API can (and will) change.
-
 ## Documentation
 
 Stream object by themselves don't have any methods for reading or writing. They just hold a reference to a PHP resource with some convenience methods to get information about the status of the stream.
