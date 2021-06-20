@@ -5,3 +5,10 @@ parameters:
     level: 7
     paths:
       - src
+    exceptions:
+        check:
+            tooWideThrowType: true
+            missingCheckedExceptionInThrows: true
+        uncheckedExceptionClasses:
+            - 'LogicException'
+    inferPrivatePropertyTypeFromConstructor: true

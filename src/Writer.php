@@ -26,6 +26,9 @@ class Writer implements Writable
         $this->stream = $stream;
     }
 
+    /**
+     * @throws UnwritableStreamException
+     */
     public function write(string $string): int
     {
         if ($this->stream->isClosed()) {
@@ -39,6 +42,8 @@ class Writer implements Writable
         $result = fwrite($this->stream->getResource(), $string);
 
         if (false === $result) {
+            $this->close();
+
             throw UnwritableStreamException::dueToPhpError();
         }
 

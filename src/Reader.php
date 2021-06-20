@@ -33,6 +33,9 @@ class Reader implements Readable
         $this->stream = $stream;
     }
 
+    /**
+     * @throws UnreadableStreamException
+     */
     public function read(int $length): string
     {
         if ($this->stream->isClosed()) {
@@ -46,12 +49,17 @@ class Reader implements Readable
         $result = fread($this->stream->getResource(), $length);
 
         if (false === $result) {
+            $this->close();
+
             throw UnreadableStreamException::dueToPhpError();
         }
 
         return $result;
     }
 
+    /**
+     * @throws UnseekableStreamException
+     */
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
         if ($this->stream->isClosed()) {
@@ -63,7 +71,11 @@ class Reader implements Readable
         }
 
         if (-1 === fseek($this->stream->getResource(), $offset, $whence)) {
-            throw new UnseekableStreamException('Unable to seek to stream position ' . $offset . ' with whence ' . var_export($whence, true));
+            throw new UnseekableStreamException(sprintf(
+                'Unable to seek to stream position %s with whence %s',
+                $offset,
+                var_export($whence, true)
+            ));
         }
     }
 
@@ -77,6 +89,9 @@ class Reader implements Readable
         $this->stream->close();
     }
 
+    /**
+     * @throws UntellableStreamException
+     */
     public function tell(): int
     {
         if ($this->stream->isClosed()) {

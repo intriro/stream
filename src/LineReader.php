@@ -8,6 +8,9 @@ use Intriro\Stream\Exception\UnreadableStreamException;
 
 class LineReader extends Reader
 {
+    /**
+     * @throws UnreadableStreamException
+     */
     public function readLine(): ?string
     {
         if ($this->stream->isClosed()) {

@@ -7,6 +7,7 @@ namespace Intriro\Stream;
 use Intriro\Stream\Exception\InvalidArgumentException;
 use function fclose;
 use function fopen;
+use function is_resource;
 use function stream_get_meta_data;
 use const SEEK_CUR;
 
@@ -61,7 +62,7 @@ class Stream
      */
     public static function createFromResource($resource): self
     {
-        if (!\is_resource($resource)) {
+        if (!is_resource($resource)) {
             throw new InvalidArgumentException('You have to provide a valid resource.');
         }
 
@@ -137,15 +138,18 @@ class Stream
         fclose($this->resource);
 
         $this->resource = null;
+        $this->open = false;
     }
 
     public function isOpen(): bool
     {
         if (true === $this->open) {
-            if (null === $this->resource || !\is_resource($this->resource)) {
+            if (null === $this->resource || !is_resource($this->resource)) {
                 $this->open = false;
             }
         }
+
+
 
         return $this->open;
     }
